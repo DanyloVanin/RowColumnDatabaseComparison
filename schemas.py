@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 
 
 # Shop
@@ -74,3 +74,21 @@ class SaleCreate(BaseModel):
     product_id: int
 
 
+# Advanced Queries Schemas
+
+class Period(BaseModel):
+    start_date: datetime
+    end_date: datetime
+
+
+class ProductPeriod(BaseModel):
+    start_date: datetime
+    end_date: datetime
+    product_id: int
+
+
+class ProductShopPeriod(BaseModel):
+    product_id: int
+    shop_id: int
+    start_date: datetime
+    end_date: datetime

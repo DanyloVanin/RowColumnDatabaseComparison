@@ -11,6 +11,10 @@ import schemas
 
 
 # @time_it.time_it_once
+# TODO change to group by queries
+# TODO time methods
+# TODO test methods
+# TODO change between oracle/postgresql
 # Порахувати кількість проданого товару
 def get_total_sold_quantity_by_product(db: Session):
     return db.query(func.sum(models.Sale.quantity)).scalar()

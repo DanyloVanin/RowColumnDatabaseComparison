@@ -4,6 +4,7 @@ from column_oriented.database import oracle_engine, OracleSession
 from row_oriented.database import postgres_engine, PostgresSession
 import schemas
 import queries
+import advanced_queries
 from sqlalchemy.orm import Session
 
 # Creating tables for each database
@@ -119,7 +120,64 @@ def get_sale_by_id(sale_id: int, db: Session = Depends(get_postgres_db)):
     return entity
 
 
-#
+@app.get("/total_sold_quantity_by_product")
+def get_total_sold_quantity_by_product(db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_total_sold_quantity_by_product(db)
+
+
+@app.get("/total_sold_price_by_product")
+def get_total_sold_price_by_product(db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_total_sold_price_by_product(db)
+
+
+@app.get("/total_sold_price_by_product_over_period")
+def get_total_sold_price_by_product_over_period(period: schemas.Period, db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_total_sold_price_by_product_over_period(db=db, start_date=period.start_date,
+                                                                        end_date=period.end_date)
+
+
+@app.get("/product_quantity_in_shop_over_period")
+def get_product_quantity_in_shop_over_period(period: schemas.ProductShopPeriod, db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_product_quantity_in_shop_over_period(db=db, start_date=period.start_date,
+                                                                     end_date=period.end_date,
+                                                                     product_id=period.product_id,
+                                                                     shop_id=period.shop_id)
+
+
+@app.get("/product_quantity_in_all_shops_over_period")
+def get_product_quantity_in_all_shops_over_period(period: schemas.ProductPeriod,
+                                                  db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_product_quantity_in_all_shops_over_period(db=db, start_date=period.start_date,
+                                                                          end_date=period.end_date,
+                                                                          product_id=period.product_id)
+
+
+@app.get("/total_revenue_over_period")
+def get_total_revenue_over_period(period: schemas.Period,
+                                  db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_total_revenue_over_period(db=db, start_date=period.start_date,
+                                                          end_date=period.end_date)
+
+
+@app.get("/top10_2product_combinations_over_period")
+def get_top10_2product_combinations_over_period(period: schemas.Period,
+                                                db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_top10_2product_combinations_over_period(db=db, start_date=period.start_date,
+                                                                        end_date=period.end_date)
+
+
+@app.get("/top10_3product_combinations_over_period")
+def get_top10_3product_combinations_over_period(period: schemas.Period,
+                                                db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_top10_3product_combinations_over_period(db=db, start_date=period.start_date,
+                                                                        end_date=period.end_date)
+
+
+@app.get("/top10_4product_combinations_over_period")
+def get_top10_4product_combinations_over_period(period: schemas.Period,
+                                                db: Session = Depends(get_postgres_db)):
+    return advanced_queries.get_top10_4product_combinations_over_period(db=db, start_date=period.start_date,
+                                                                        end_date=period.end_date)
 
 
 @app.get("/")
