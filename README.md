@@ -27,8 +27,60 @@ The goal of the project is to compare same queries on column-based and row-based
 5. Порахувати скільки було придбано товару А в усіх магазинах за період С
 6. Порахувати сумарну виручку магазинів за період С
 7. Вивести топ 10 купівель товарів по два за період С (наприклад масло, хліб - 1000 разів)
-8. Вивести топ 10 купівель товарів по три за період С (наприклад молоко, масло, хліб - 1000 разів)
+```postgresql
+select s.product_id as product_1, 
+       s2.product_id as product_2, 
+       count(*) as number_of_sales, 
+       string_agg(s.receipt_id::varchar, ',') as receipts 
+from sales s cross join sales s2
+where s.receipt_id = s2.receipt_id 
+	and s.receipt_id in (select id from receipts r where r."date"<'2022-04-03' and r."date">'2022-01-01')
+group by s.product_id ,s2.product_id 
+having s.product_id != s2.product_id 
+order by number_of_sales desc
+```
+Problem, because for us (A,B) is same as (B,A), but cross join is about permutations, not combinations. Improved solution:
+```postgresql
+select s.product_id as product_1, 
+       s2.product_id as product_2, 
+       count(*) as number_of_sales, 
+       string_agg(s.receipt_id::varchar, ',') as receipts 
+from sales s join sales s2 on s.product_id < s2.product_id 
+where s.receipt_id = s2.receipt_id 
+	and s.receipt_id in (select id from receipts r where r."date"<'2022-12-31' and r."date">'2022-01-01')
+group by s.product_id ,s2.product_id 
+order by number_of_sales desc
+fetch first 10 rows only;
+```
+9. Вивести топ 10 купівель товарів по три за період С (наприклад молоко, масло, хліб - 1000 разів)
+```postgresql
+select s.product_id as product_1, 
+       s2.product_id as product_2, 
+       s3.product_id as product_3,
+       count(*) as number_of_sales, 
+       string_agg(s.receipt_id::varchar, ',') as receipts 
+from sales s join sales s2 on s.product_id < s2.product_id join sales s3 on s2.product_id < s3.product_id 
+where s.receipt_id = s2.receipt_id and s2.receipt_id = s3.receipt_id 
+	and s.receipt_id in (select id from receipts r where r."date"<'2022-12-31' and r."date">'2022-01-01')
+group by s.product_id ,s2.product_id , s3.product_id 
+order by number_of_sales desc
+fetch first 10 rows only;
+```
 9. Вивести топ 10 купівель товарів по чотири за період С
+```postgresql
+select s.product_id as product_1, 
+       s2.product_id as product_2, 
+       s3.product_id as product_3,
+       s4.product_id as product_4,
+       count(*) as number_of_sales, 
+       string_agg(s.receipt_id::varchar, ',') as receipts 
+from sales s join sales s2 on s.product_id < s2.product_id join sales s3 on s2.product_id < s3.product_id join sales s4 on s3.product_id < s4.product_id 
+where s.receipt_id = s2.receipt_id and s2.receipt_id = s3.receipt_id and s3.receipt_id = s4.receipt_id 
+	and s.receipt_id in (select id from receipts r where r."date"<'2022-12-31' and r."date">'2022-01-01')
+group by s.product_id ,s2.product_id , s3.product_id , s4.product_id 
+order by number_of_sales desc
+fetch first 10 rows only;
+```
 
 ## Resources
 
