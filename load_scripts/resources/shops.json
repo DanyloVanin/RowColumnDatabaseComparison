@@ -1,14 +1,38 @@
 [
-  "Rozetka",
-  "Citrus",
-  "Eldorado",
-  "Foxtrot",
-  "EShop",
-  "Webbuy",
-  "Click to Buy",
-  "Universe of goods",
-  "Internet Made Easy",
-  "EBuy",
-  "ShipToYou",
-  "BusiNice"
+  {
+    "name": "Rozetka"
+  },
+  {
+    "name": "Citrus"
+  },
+  {
+    "name": "Eldorado"
+  },
+  {
+    "name": "Foxtrot"
+  },
+  {
+    "name": "EShop"
+  },
+  {
+    "name": "Webbuy"
+  },
+  {
+    "name": "Click to Buy"
+  },
+  {
+    "name": "Universe of goods"
+  },
+  {
+    "name": "Internet Made Easy"
+  },
+  {
+    "name": "EBuy"
+  },
+  {
+    "name": "ShipToYou"
+  },
+  {
+    "name": "BusiNice"
+  }
 ]

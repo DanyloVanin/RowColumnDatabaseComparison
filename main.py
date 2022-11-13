@@ -32,7 +32,7 @@ def get_oracle_db():
 
 # Shop
 @app.post("/shop", response_model=schemas.Shop)
-def create_shop(shop: schemas.ShopCreate, db: Session = Depends(get_oracle_db)):
+def create_shop(shop: schemas.ShopCreate, db: Session = Depends(get_postgres_db)):
     entity = queries.get_shop_by_name(db, name=shop.name)
     if entity:
         raise HTTPException(status_code=409, detail="Entity with such name already exists")
@@ -40,13 +40,13 @@ def create_shop(shop: schemas.ShopCreate, db: Session = Depends(get_oracle_db)):
 
 
 @app.get("/shop", response_model=list[schemas.Shop])
-def get_shops(skip: int = 0, limit: int = 100, db: Session = Depends(get_oracle_db)):
+def get_shops(skip: int = 0, limit: int = 100, db: Session = Depends(get_postgres_db)):
     organizations = queries.get_shops(db, skip=skip, limit=limit)
     return organizations
 
 
 @app.get("/shop/{shop_id}", response_model=schemas.Shop)
-def get_shop_by_id(shop_id: int, db: Session = Depends(get_oracle_db)):
+def get_shop_by_id(shop_id: int, db: Session = Depends(get_postgres_db)):
     entity = queries.get_shop_by_id(db, shop_id=shop_id)
     if entity is None:
         raise HTTPException(status_code=404, detail="Shop not found")
@@ -56,7 +56,7 @@ def get_shop_by_id(shop_id: int, db: Session = Depends(get_oracle_db)):
 # Product
 
 @app.post("/product", response_model=schemas.Product)
-def create_product(product: schemas.ProductCreate, db: Session = Depends(get_oracle_db)):
+def create_product(product: schemas.ProductCreate, db: Session = Depends(get_postgres_db)):
     entity = queries.get_product_by_name(db, name=product.name)
     if entity:
         raise HTTPException(status_code=409, detail="Entity with such name already exists")
@@ -64,13 +64,13 @@ def create_product(product: schemas.ProductCreate, db: Session = Depends(get_ora
 
 
 @app.get("/product", response_model=list[schemas.Product])
-def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_oracle_db)):
+def get_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_postgres_db)):
     products = queries.get_products(db, skip=skip, limit=limit)
     return products
 
 
 @app.get("/product/{product_id}", response_model=schemas.Product)
-def get_product_by_id(product_id: int, db: Session = Depends(get_oracle_db)):
+def get_product_by_id(product_id: int, db: Session = Depends(get_postgres_db)):
     entity = queries.get_product_by_id(db, product_id=product_id)
     if entity is None:
         raise HTTPException(status_code=404, detail="Product not found")
@@ -80,18 +80,18 @@ def get_product_by_id(product_id: int, db: Session = Depends(get_oracle_db)):
 # Receipt
 
 @app.post("/receipt", response_model=schemas.Receipt)
-def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_oracle_db)):
+def create_receipt(receipt: schemas.ReceiptCreate, db: Session = Depends(get_postgres_db)):
     return queries.create_receipt(db=db, receipt=receipt)
 
 
 @app.get("/receipt", response_model=list[schemas.Receipt])
-def get_receipts(skip: int = 0, limit: int = 100, db: Session = Depends(get_oracle_db)):
+def get_receipts(skip: int = 0, limit: int = 100, db: Session = Depends(get_postgres_db)):
     receipts = queries.get_receipts(db, skip=skip, limit=limit)
     return receipts
 
 
 @app.get("/receipt/{receipt_id}", response_model=schemas.Receipt)
-def get_receipt_by_id(receipt_id: int, db: Session = Depends(get_oracle_db)):
+def get_receipt_by_id(receipt_id: int, db: Session = Depends(get_postgres_db)):
     entity = queries.get_receipt_by_id(db, receipt_id=receipt_id)
     if entity is None:
         raise HTTPException(status_code=404, detail="Receipt not found")
@@ -101,18 +101,18 @@ def get_receipt_by_id(receipt_id: int, db: Session = Depends(get_oracle_db)):
 # Sale
 
 @app.post("/sale", response_model=schemas.Sale)
-def create_sale(sale: schemas.SaleCreate, db: Session = Depends(get_oracle_db)):
+def create_sale(sale: schemas.SaleCreate, db: Session = Depends(get_postgres_db)):
     return queries.create_sale(db=db, sale=sale)
 
 
 @app.get("/sale", response_model=list[schemas.Sale])
-def get_sales(skip: int = 0, limit: int = 100, db: Session = Depends(get_oracle_db)):
+def get_sales(skip: int = 0, limit: int = 100, db: Session = Depends(get_postgres_db)):
     receipts = queries.get_sales(db, skip=skip, limit=limit)
     return receipts
 
 
 @app.get("/sale/{sale_id}", response_model=schemas.Sale)
-def get_sale_by_id(sale_id: int, db: Session = Depends(get_oracle_db)):
+def get_sale_by_id(sale_id: int, db: Session = Depends(get_postgres_db)):
     entity = queries.get_sale_by_id(db, sale_id=sale_id)
     if entity is None:
         raise HTTPException(status_code=404, detail="Sale not found")

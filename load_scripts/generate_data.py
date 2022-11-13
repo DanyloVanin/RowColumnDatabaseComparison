@@ -6,7 +6,7 @@ from faker import Faker
 
 fake = Faker()
 
-API_URL = "localhost:8080"
+API_URL = "http://localhost:8000"
 NUM_RECEIPTS = 100000
 
 
@@ -17,6 +17,7 @@ def create_shops():
         shops = []
         for shop in data:
             response = requests.post(API_URL + '/shop', json=shop).json()
+            print('Created shop: ', response)
             shops.append(response)
         return shops
 
@@ -32,6 +33,7 @@ def create_products():
         products = []
         for product in data:
             response = requests.post(API_URL + '/product', json=product).json()
+            print('Created product: ', response)
             products.append(response)
         return products
 
@@ -40,8 +42,17 @@ def get_products():
     return requests.get(API_URL + '/product').json()
 
 
-full_shops = create_shops()
-full_products = create_products()
+# Create/Get shops
+full_shops = get_shops()
+if not full_shops:
+    full_shops = create_shops()
+print("Shops: ", full_shops)
+
+# Create/Get Products
+full_products = get_products()
+if not full_products:
+    full_products = create_products()
+print("Products: ", full_products)
 
 
 # Generate Sales + Receipts
@@ -53,29 +64,35 @@ def generate_receipt_sales():
     total_price = 0.0
     for product in selected_products:
         quantity = random.randint(1, 5)
-        price = quantity * product.price
+        price = quantity * product['price']
         data = {
-            "product_id": product.id,
+            "product_id": product['id'],
             "quantity": quantity,
             "price": price
         }
         total_price += price
         sales.append(data)
     # Generate receipt
-    date = fake.date_between(start_date='-1y', end_date='today')
+    date = fake.date_time_this_year()
     shop = random.choice(full_shops)
     receipt = {
-        "date": date,
-        "shop_id": shop.id,
+        "date": date.isoformat(),
+        "shop_id": shop['id'],
         "total_price": total_price
     }
     # Post Receipt
-    receipt_response = requests.post(API_URL + '/receipt', json=receipt).json()
+    receipt_response = requests.post(API_URL + '/receipt', json=receipt)
+    if receipt_response.status_code == 200:
+        print(f"===> Created receipt with {num_sales} sales: ", receipt)
+    receipt_data = receipt_response.json()
     # Fill receipt_id for sales
     for sale in sales:
-        sale['receipt_id'] = receipt_response.id
-        sale_response = requests.post(API_URL + '/sale', json=sale).json()
+        sale['receipt_id'] = receipt_data['id']
+        sale_response = requests.post(API_URL + '/sale', json=sale)
+        if sale_response.status_code == 200:
+            print("Created sale: ", sale)
 
 
-for _ in range(NUM_RECEIPTS):
+for i in range(NUM_RECEIPTS):
+    print(f"Generating receipt ({i}/{NUM_RECEIPTS})...")
     generate_receipt_sales()
