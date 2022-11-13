@@ -1,0 +1,78 @@
+[
+  {
+    "name": "20in Monitor",
+    "price": 109.99
+  },
+  {
+    "name": "27in 4K Gaming Monitor",
+    "price": 389.99
+  },
+  {
+    "name": "27in FHD Monitor",
+    "price": 149.99
+  },
+  {
+    "name": "34in Ultrawide Monitor",
+    "price": 379.99
+  },
+  {
+    "name": "AA Batteries (4-pack)",
+    "price": 3.84
+  },
+  {
+    "name": "AAA Batteries (4-pack)",
+    "price": 2.99
+  },
+  {
+    "name": "Apple Airpods Headphones",
+    "price": 150
+  },
+  {
+    "name": "Bose SoundSport Headphones",
+    "price": 99.99
+  },
+  {
+    "name": "Flatscreen TV",
+    "price": 300
+  },
+  {
+    "name": "Google Phone",
+    "price": 600
+  },
+  {
+    "name": "LG Dryer",
+    "price": 550.0
+  },
+  {
+    "name": "LG Washing Machine",
+    "price": 600.0
+  },
+  {
+    "name": "Lightning Charging Cable",
+    "price": 14.95
+  },
+  {
+    "name": "Macbook Pro Laptop",
+    "price": 1700
+  },
+  {
+    "name": "ThinkPad Laptop",
+    "price": 999.99
+  },
+  {
+    "name": "USB-C Charging Cable",
+    "price": 11.95
+  },
+  {
+    "name": "Vareebadd Phone",
+    "price": 400
+  },
+  {
+    "name": "Wired Headphones",
+    "price": 11.99
+  },
+  {
+    "name": "iPhone",
+    "price": 700
+  }
+]
