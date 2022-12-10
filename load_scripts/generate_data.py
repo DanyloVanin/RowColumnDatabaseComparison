@@ -8,6 +8,7 @@ fake = Faker()
 
 API_URL = "http://localhost:8000"
 NUM_RECEIPTS = 100000
+DB_TYPE = "column"
 
 
 # Generate Shops
@@ -16,14 +17,14 @@ def create_shops():
         data = json.load(f)
         shops = []
         for shop in data:
-            response = requests.post(API_URL + '/shop', json=shop).json()
+            response = requests.post(API_URL + f'/shop?db_type={DB_TYPE}', json=shop).json()
             print('Created shop: ', response)
             shops.append(response)
         return shops
 
 
 def get_shops():
-    return requests.get(API_URL + '/shop').json()
+    return requests.get(API_URL + f'/shop?db_type={DB_TYPE}').json()
 
 
 # Generate Products
@@ -32,14 +33,14 @@ def create_products():
         data = json.load(f)
         products = []
         for product in data:
-            response = requests.post(API_URL + '/product', json=product).json()
+            response = requests.post(API_URL + f'/product?db_type={DB_TYPE}', json=product).json()
             print('Created product: ', response)
             products.append(response)
         return products
 
 
 def get_products():
-    return requests.get(API_URL + '/product').json()
+    return requests.get(API_URL + f'/product?db_type={DB_TYPE}').json()
 
 
 # Create/Get shops
@@ -81,14 +82,14 @@ def generate_receipt_sales():
         "total_price": total_price
     }
     # Post Receipt
-    receipt_response = requests.post(API_URL + '/receipt', json=receipt)
+    receipt_response = requests.post(API_URL + f'/receipt?db_type={DB_TYPE}', json=receipt)
     if receipt_response.status_code == 200:
         print(f"===> Created receipt with {num_sales} sales: ", receipt)
     receipt_data = receipt_response.json()
     # Fill receipt_id for sales
     for sale in sales:
         sale['receipt_id'] = receipt_data['id']
-        sale_response = requests.post(API_URL + '/sale', json=sale)
+        sale_response = requests.post(API_URL + f'/sale?db_type={DB_TYPE}', json=sale)
         if sale_response.status_code == 200:
             print("Created sale: ", sale)
 
