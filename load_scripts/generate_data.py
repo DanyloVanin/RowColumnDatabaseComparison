@@ -8,7 +8,7 @@ fake = Faker()
 
 API_URL = "http://localhost:8000"
 NUM_RECEIPTS = 100000
-DB_TYPE = "column"
+DB_TYPE = "row"
 
 
 # Generate Shops
